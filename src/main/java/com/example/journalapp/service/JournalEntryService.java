@@ -30,7 +30,7 @@ public class JournalEntryService {
             journalEntry.setDate(new java.util.Date());
             JournalEntry saved = journalEntryRepository.save(journalEntry);
             user.getJournalEntries().add(saved);
-            userService.saveEntry(user);
+            userService.SaveUser(user);
             return saved;
 
         } catch (Exception e) {
@@ -39,8 +39,8 @@ public class JournalEntryService {
         }
     }
 
-    public void saveEntry(JournalEntry journalEntry) {
-        journalEntryRepository.save(journalEntry);
+    public JournalEntry saveEntry(JournalEntry journalEntry) {
+        return journalEntryRepository.save(journalEntry);
     }
 
     public List<JournalEntry> getAll() {
@@ -67,7 +67,7 @@ public class JournalEntryService {
             if (!removed) {
                 throw new RuntimeException("Journal entry not found in user's list");
             }
-            userService.saveEntry(user);
+            userService.SaveUser(user);
             journalEntryRepository.deleteById(id);
 
         } catch (Exception e) {
