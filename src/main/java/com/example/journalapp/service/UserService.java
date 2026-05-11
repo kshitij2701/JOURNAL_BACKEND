@@ -3,6 +3,8 @@ package com.example.journalapp.service;
 import com.example.journalapp.entity.User;
 import com.example.journalapp.repository.UserRepository;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +21,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public User saveNewUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
