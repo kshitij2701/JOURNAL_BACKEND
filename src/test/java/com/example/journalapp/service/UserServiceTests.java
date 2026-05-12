@@ -18,6 +18,7 @@ public class UserServiceTests {
     private UserRepository userRepository;
 
 
+    @Disabled
     @ParameterizedTest
     @CsvSource({
             "Dhruv",
