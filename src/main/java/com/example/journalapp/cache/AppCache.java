@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 public class AppCache {
 
-    public enum keys{
+    public enum keys {
         WEATHER_API
     }
 
@@ -22,15 +22,20 @@ public class AppCache {
     @Autowired
     private ConfigJournalAppRepository configJournalAppRepository;
 
-
-
     @PostConstruct
     public void init() {
 
-        List<ConfigJournalAppEntity> all = configJournalAppRepository.findAll();
-        for (ConfigJournalAppEntity configJournalAppEntity : all) {
-            cache.put(configJournalAppEntity.getKey(), configJournalAppEntity.getValue());
+        System.out.println("Refreshing cache...");
+
+        cache.clear();
+
+        List<ConfigJournalAppEntity> all =
+                configJournalAppRepository.findAll();
+
+        for (ConfigJournalAppEntity entity : all) {
+            cache.put(entity.getKey(), entity.getValue());
         }
 
+        System.out.println("Cache loaded successfully");
     }
 }

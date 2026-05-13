@@ -17,7 +17,6 @@ public class UserServiceTests {
     @Autowired
     private UserRepository userRepository;
 
-
     @Disabled
     @ParameterizedTest
     @CsvSource({
@@ -28,6 +27,7 @@ public class UserServiceTests {
     public void testFindByUserName(String name) {
         assertNotNull(userRepository.findByUserName(name));
     }
+
 
     @Disabled
     @ParameterizedTest

@@ -1,5 +1,6 @@
 package com.example.journalapp.controller;
 
+import com.example.journalapp.cache.AppCache;
 import com.example.journalapp.entity.User;
 import com.example.journalapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private AppCache appCache;
 
     @Autowired
     private UserService userService;
@@ -60,4 +64,22 @@ public class AdminController {
                     .body("Failed to create admin user");
         }
     }
+
+    @GetMapping("/clear-app-cache")
+    public ResponseEntity<?> clearAppCache() {
+
+        try {
+            appCache.init();
+            System.out.println("API HIT");
+            return ResponseEntity.ok(
+                    "Application cache refreshed successfully"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to refresh cache : " + e.getMessage());
+        }
+    }
+
 }
