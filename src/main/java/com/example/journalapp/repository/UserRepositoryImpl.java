@@ -23,5 +23,8 @@ public class UserRepositoryImpl {
         List<User> users = mongoTemplate.find(query, User.class);
         return users;
 
+        // scheduled task hai
+        // automate task like in our case sending mail every week on sunday using
+
     }
 }

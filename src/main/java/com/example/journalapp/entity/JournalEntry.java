@@ -1,5 +1,6 @@
 package com.example.journalapp.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.*;
@@ -20,7 +21,7 @@ public class JournalEntry {
     @NonNull
     private String title;
     private String content;
-    private Date date;
+    private LocalDateTime date;
 
 }
 
