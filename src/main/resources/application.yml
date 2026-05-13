@@ -7,6 +7,22 @@ spring:
       uri: mongodb+srv://shishodiakshitij123_db_user:eJFDGXYsqyktlnFm@cluster0.1toyzaw.mongodb.net/journaldb?retryWrites=true&w=majority&appName=Cluster0
       auto-index-creation: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kshitijshishodia40@gmail.com
+    password: rmpm hdsb lzex ohen
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+
+
+
 server:
   port: 8086
   servlet:
