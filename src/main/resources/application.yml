@@ -2,6 +2,11 @@ spring:
   application:
     name: journalapp
 
+  redis:
+    host: localhost
+    port: 6379
+
+
   data:
     mongodb:
       uri: mongodb+srv://shishodiakshitij123_db_user:eJFDGXYsqyktlnFm@cluster0.1toyzaw.mongodb.net/journaldb?retryWrites=true&w=majority&appName=Cluster0
