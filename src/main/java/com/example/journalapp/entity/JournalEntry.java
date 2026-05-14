@@ -3,6 +3,7 @@ package com.example.journalapp.entity;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.example.journalapp.enums.Sentiment;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -22,6 +23,7 @@ public class JournalEntry {
     private String title;
     private String content;
     private LocalDateTime date;
+    private Sentiment sentiment;
 
 }
 

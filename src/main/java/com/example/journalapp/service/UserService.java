@@ -30,6 +30,25 @@ public class UserService {
         return userRepository.save(user);
     }
 
+//    public User saveNewUser(User user) {
+//        user.setPassword(
+//                passwordEncoder.encode(user.getPassword())
+//        );
+//        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+//            user.setRoles(List.of("USER"));
+//        } else {
+//            List<String> roles = user.getRoles()
+//                    .stream()
+//                    .map(String::toUpperCase)
+//                    .distinct()
+//                    .toList();
+//
+//            user.setRoles(roles);
+//        }
+//        return userRepository.save(user);
+//    }
+
+
     public User saveAdmin(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER", "ADMIN"));
