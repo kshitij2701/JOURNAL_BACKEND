@@ -79,6 +79,47 @@ public class JournalEntryService {
         }
     }
 
+    @Transactional
+    public JournalEntry updateJournalEntry(ObjectId id, JournalEntry newEntry, String userName) {
+
+        User user = userService.findByUserName(userName);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        boolean entryExists = user.getJournalEntries()
+                .stream()
+                .anyMatch(entry -> entry.getId().equals(id));
+
+        if (!entryExists) {
+            throw new RuntimeException("Journal entry not found");
+        }
+        JournalEntry oldEntry = journalEntryRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Journal entry not found"));
+
+        // Update title
+        if (newEntry.getTitle() != null &&
+                !newEntry.getTitle().trim().isEmpty()) {
+
+            oldEntry.setTitle(newEntry.getTitle());
+        }
+
+        // Update content
+        if (newEntry.getContent() != null &&
+                !newEntry.getContent().trim().isEmpty()) {
+
+            oldEntry.setContent(newEntry.getContent());
+        }
+
+        // Update sentiment
+        if (newEntry.getSentiment() != null) {
+
+            oldEntry.setSentiment(newEntry.getSentiment());
+        }
+        return journalEntryRepository.save(oldEntry);
+    }
+
 //    public void updateJournal(ObjectId id, JournalEntry newEntry){
 //    }
 

@@ -184,66 +184,92 @@ public class JournalEntryController {
 
         }
 
-        @PutMapping("/id/{id}")
-        public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry) {
 
-            try {
+    @PutMapping("/id/{id}")
+    public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry) {
 
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                String userName = authentication.getName();
-                User user = userService.findByUserName(userName);
+        try {
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
+            JournalEntry updatedJournal =
+                    journalEntryService.updateJournalEntry(id, newEntry, userName);
 
-                if (user == null) {
-                    return ResponseEntity
-                            .status(HttpStatus.NOT_FOUND)
-                            .body("User not found");
-                }
+            return ResponseEntity.ok(updatedJournal);
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
 
-                boolean entryExists = user.getJournalEntries()
-                        .stream()
-                        .anyMatch(entry -> entry.getId().equals(id));
-
-                if (!entryExists) {
-                    return ResponseEntity
-                            .status(HttpStatus.NOT_FOUND)
-                            .body("Journal entry not found");
-                }
-
-                Optional<JournalEntry> optionalEntry =
-                        journalEntryService.findById(id);
-
-                if (optionalEntry.isEmpty()) {
-                    return ResponseEntity
-                            .status(HttpStatus.NOT_FOUND)
-                            .body("Journal entry not found");
-                }
-
-                JournalEntry old = optionalEntry.get();
-
-                old.setTitle(
-                        newEntry.getTitle() != null &&
-                                !newEntry.getTitle().isEmpty()
-                                ? newEntry.getTitle()
-                                : old.getTitle()
-                );
-
-                old.setContent(
-                        newEntry.getContent() != null &&
-                                !newEntry.getContent().isEmpty()
-                                ? newEntry.getContent()
-                                : old.getContent()
-                );
-
-                JournalEntry updated =
-                        journalEntryService.saveEntry(old);
-
-                return ResponseEntity.ok(updated);
-
-            } catch (Exception e) {
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Failed to update journal entry");
-            }
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update journal entry");
         }
+    }
+
+//        @PutMapping("/id/{id}")
+//        public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry) {
+//
+//            try {
+//
+//                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//                String userName = authentication.getName();
+//                User user = userService.findByUserName(userName);
+//
+//                if (user == null) {
+//                    return ResponseEntity
+//                            .status(HttpStatus.NOT_FOUND)
+//                            .body("User not found");
+//                }
+//
+//                boolean entryExists = user.getJournalEntries()
+//                        .stream()
+//                        .anyMatch(entry -> entry.getId().equals(id));
+//
+//                if (!entryExists) {
+//                    return ResponseEntity
+//                            .status(HttpStatus.NOT_FOUND)
+//                            .body("Journal entry not found");
+//                }
+//
+//                Optional<JournalEntry> optionalEntry =
+//                        journalEntryService.findById(id);
+//
+//                if (optionalEntry.isEmpty()) {
+//                    return ResponseEntity
+//                            .status(HttpStatus.NOT_FOUND)
+//                            .body("Journal entry not found");
+//                }
+//
+//                JournalEntry old = optionalEntry.get();
+//
+//                old.setTitle(
+//                        newEntry.getTitle() != null &&
+//                                !newEntry.getTitle().isEmpty()
+//                                ? newEntry.getTitle()
+//                                : old.getTitle()
+//                );
+//
+//                old.setContent(
+//                        newEntry.getContent() != null &&
+//                                !newEntry.getContent().isEmpty()
+//                                ? newEntry.getContent()
+//                                : old.getContent()
+//                );
+//
+//                JournalEntry updated =
+//                        journalEntryService.saveEntry(old);
+//
+//                return ResponseEntity.ok(updated);
+//
+//            } catch (Exception e) {
+//                return ResponseEntity
+//                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                        .body("Failed to update journal entry");
+//            }
+//        }
+
+
 }
 

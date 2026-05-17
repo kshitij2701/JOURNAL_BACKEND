@@ -27,25 +27,55 @@ public class UserController {
     private WeatherService weatherService;
 
     // ✅ UPDATE USER
+//    @PutMapping
+//    public ResponseEntity<User> updateUser(@RequestBody User user) {
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String userName = authentication.getName();
+//
+//        User userInDb = userService.findByUserName(userName);
+//        if (userInDb == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404
+//        }
+//        if (user.getUserName() != null && !user.getUserName().isEmpty()) {
+//            userInDb.setUserName(user.getUserName());
+//        }
+//        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+//            userInDb.setPassword(user.getPassword());
+//        }
+//        User updatedUser = userService.saveNewUser(userInDb);
+//        return new ResponseEntity<>(updatedUser, HttpStatus.OK); // 200
+//
+//    }
+
+    // ✅ UPDATE USER
     @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
+        try {
 
-        User userInDb = userService.findByUserName(userName);
-        if (userInDb == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404
-        }
-        if (user.getUserName() != null && !user.getUserName().isEmpty()) {
-            userInDb.setUserName(user.getUserName());
-        }
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            userInDb.setPassword(user.getPassword());
-        }
-        User updatedUser = userService.saveNewUser(userInDb);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK); // 200
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
 
+            String userName = authentication.getName();
+
+            User updatedUser =
+                    userService.updateUser(user, userName);
+
+            return ResponseEntity.ok(updatedUser);
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update user");
+        }
     }
 
     @DeleteMapping

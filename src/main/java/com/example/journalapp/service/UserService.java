@@ -59,6 +59,41 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateUser(User updatedUser, String userName) {
+
+        User userInDb = userRepository.findByUserName(userName);
+        if (userInDb == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // Update username
+        if (updatedUser.getUserName() != null &&
+                !updatedUser.getUserName().trim().isEmpty()) {
+            userInDb.setUserName(updatedUser.getUserName());
+        }
+
+        // Update password
+        if (updatedUser.getPassword() != null &&
+                !updatedUser.getPassword().trim().isEmpty()) {
+            userInDb.setPassword(
+                    passwordEncoder.encode(updatedUser.getPassword())
+            );
+        }
+
+        // Update email
+        if (updatedUser.getEmail() != null &&
+                !updatedUser.getEmail().trim().isEmpty()) {
+
+            userInDb.setEmail(updatedUser.getEmail());
+        }
+
+        // Update sentiment analysis preference
+        userInDb.setSentimentAnalysis(
+                updatedUser.isSentimentAnalysis()
+        );
+        return userRepository.save(userInDb);
+    }
+
     public List<User> getAll() {
         // it will return the list of user Entries present in the db
         System.out.println("GET /user moved to service");
